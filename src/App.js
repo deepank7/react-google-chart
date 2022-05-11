@@ -1,23 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Chart from "./charts";
+import React, { useState, useEffect } from "react";
+import response from "./data.json";
 
 function App() {
+  const [show, setShow] = useState(false);
+  const [data, setData] = useState(false);
+
+  useEffect(() => {
+    if (show) {
+      setData(response);
+    }
+  }, [show]);
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {show ? (
+        <span>
+          <h2>Available charts</h2>
+          {show &&
+            data &&
+            data.charts.map((chartData, i) => (
+              <Chart chart={chartData} key={i} />
+            ))}
+        </span>
+      ) : (
+        <h2>No charts available </h2>
+      )}
+      <button onClick={() => setShow(!show)}>
+        {show ? "Hide data" : "Fetch data"}
+      </button>
     </div>
   );
 }
